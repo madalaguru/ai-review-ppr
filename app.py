@@ -67,7 +67,7 @@ sets = {
 def no_bounded(d):
     d = d.copy()
     for f in ["acc", "time_red", "speed_inc", "energy_red", "resource_red", "latency_ms"]:
-        d.loc[d[f + "_form"].isin(["<", ">", "‚â§", "‚â•"]), f] = np.nan
+        d.loc[d[f + "_form"].isin(["<", ">", "\u2264", "\u2265"]), f] = np.nan
     return d
 sets["D_primary_no_bounded"] = no_bounded(sets["B_primary_eligible"])
 
@@ -157,7 +157,7 @@ for i in range(4):
         a0.text(j, i, t, ha="center", va="center", fontsize=8, color=("white" if (not np.isnan(M[i, j]) and abs(M[i, j]) > 0.6) else "black"))
 a0.set_xticks(range(4)); a0.set_yticks(range(4))
 a0.set_xticklabels([names[c] for c in CORR]); a0.set_yticklabels([names[c] for c in CORR])
-a0.set_title("(a) Spearman œÅ, primary set, pairwise complete")
+a0.set_title("(a) Spearman \u03c1, primary set, pairwise complete")
 fig.colorbar(im, ax=a0, fraction=0.046)
 
 a1 = ax[0, 1]
@@ -171,7 +171,7 @@ for k, c in enumerate(order):
         a1.errorbar(k + .3, v.mean(), yerr=[[v.mean() - lo], [hi - v.mean()]], fmt="D", color="#C44E52", capsize=4)
     a1.text(k, 86.2, f"n={len(v)}", ha="center", fontsize=8)
 a1.set_xticks(range(3)); a1.set_xticklabels([lab[c] for c in order]); a1.set_ylim(85.5, 100)
-a1.set_ylabel("Accuracy-type level (%)"); a1.set_title("(b) Accuracy by modality class: mean ¬± 95% CI")
+a1.set_ylabel("Accuracy-type level (%)"); a1.set_title("(b) Accuracy by modality class: mean \u00b1 95% CI")
 
 a2 = ax[1, 0]
 data = [prim[f].dropna().values for f in ["time_red", "speed_inc", "energy_red", "resource_red"]]
@@ -199,12 +199,12 @@ fig2, axf = plt.subplots(figsize=(7.2, 9.6)); axf.axis("off")
 n_ent, n_dup, n_u = len(df), int((df.duplicate_of != "").sum()), len(uniq)
 vc = uniq.screen_code.value_counts()
 boxes = [
-    (0.5, 0.93, "Identification\nPeer-reviewed Quantum-AI literature, 1 Jan 2024 ‚Äì 31 Dec 2025\nDatabase-level hit counts not retained (see Limitations)"),
-    (0.5, 0.78, f"Unique studies in the evidence map (Tables 1‚Äì8)\nn = {n_u}"),
+    (0.5, 0.93, "Identification\nPeer-reviewed Quantum-AI literature, 1 Jan 2024 \u2013 31 Dec 2025\nDatabase-level hit counts not retained (see Limitations)"),
+    (0.5, 0.78, f"Unique studies in the evidence map (Tables 1\u20138)\nn = {n_u}"),
     (0.5, 0.63, "Classification by evidence category and quantum modality\n(title and tabulated method; Supplementary Data S1)"),
-    (0.5, 0.46, f"Primary quantitative set\nquantum computational method (Q) = {vc.get('Q',0)} ‚Ä¢ quantum-inspired (QI) = {vc.get('QI',0)}\nclassical AI, quantum-oriented (QO) = {vc.get('QO',0)}"),
-    (0.5, 0.28, f"Primary quantitative synthesis\nn = {int(uniq.eligible_primary.sum())} studies\nseparate metric families ‚Ä¢ bootstrap 95% CIs ‚Ä¢ Spearman œÅ"),
-    (0.5, 0.11, "Sensitivity analyses\nall unique studies ‚Ä¢ quantum methods only ‚Ä¢ bounded values removed"),
+    (0.5, 0.46, f"Primary quantitative set\nquantum computational method (Q) = {vc.get('Q',0)} \u2022 quantum-inspired (QI) = {vc.get('QI',0)}\nclassical AI, quantum-oriented (QO) = {vc.get('QO',0)}"),
+    (0.5, 0.28, f"Primary quantitative synthesis\nn = {int(uniq.eligible_primary.sum())} studies\nseparate metric families \u2022 bootstrap 95% CIs \u2022 Spearman \u03c1"),
+    (0.5, 0.11, "Sensitivity analyses\nall unique studies \u2022 quantum methods only \u2022 bounded values removed"),
 ]
 for x, y, t in boxes:
     axf.text(x, y, t, ha="center", va="center", fontsize=9, bbox=dict(boxstyle="round,pad=0.6", fc="#F6F8FA", ec="#5A6772", lw=1.4))
